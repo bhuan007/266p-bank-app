@@ -12,6 +12,7 @@
         <activity android:name=".WithdrawActivity"/>
         <activity android:name=".DepositActivity" />
         <activity android:name=".AccountDetailActivity" />
+        <activity android:name=".BankLogoActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
