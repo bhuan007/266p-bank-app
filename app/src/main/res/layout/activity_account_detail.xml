@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AccountDetailActivity"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+    <TextView
+        android:id="@+id/txtWelcomeUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello Bryan!"
+        android:padding="100px"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:padding="100px">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Balance: "
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/txtBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$8,485.25"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnStatement"
+        android:layout_marginTop="40px"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="View Statement"
+        android:background="@drawable/btn_round" />
+
+    <Button
+        android:id="@+id/btnWithdraw"
+        android:layout_marginTop="40px"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Withdraw"
+        android:background="@drawable/btn_round"/>
+
+    <Button
+        android:id="@+id/btnDeposit"
+        android:layout_marginTop="40px"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Deposit"
+        android:background="@drawable/btn_round"/>
+
+    <Button
+        android:id="@+id/btnLogos"
+        android:layout_marginTop="40px"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Download Bank Logos"
+        android:background="@drawable/btn_round"/>
+
+</LinearLayout>
