@@ -9,8 +9,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Bank">
-        <activity android:name=".BankLogoActivity"></activity>
+<<<<<<< HEAD
+        <activity android:name=".StatementActivity"></activity>
         <activity android:name=".AccountDetailActivity" />
+=======
+
+        <activity android:name=".activity_login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".BankLogoActivity"></activity>
+        <activity android:name=".WithdrawActivity"/>
+        <activity android:name=".DepositActivity" />
+        <activity android:name=".AccountDetailActivity" />
+        <activity android:name=".BankLogoActivity"/>
+>>>>>>> 82af9d91c756c38d714c9266f7bfe6a2c125b9a7
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
