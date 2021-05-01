@@ -16,6 +16,7 @@ public abstract class UserDatabase extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context, UserDatabase.class, "user_db")
                     .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
                     .build();
         }
 

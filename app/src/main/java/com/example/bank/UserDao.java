@@ -1,10 +1,12 @@
 package com.example.bank;
 
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+@Dao
 public interface UserDao {
 
     @Insert
@@ -18,4 +20,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE userName=:userName AND password=:password")
     User selectSingleUser(String userName, String password);
+
+    @Query("SELECT * FROM users WHERE userName=:userName")
+    User selectSingleUserByName(String userName);
 }
