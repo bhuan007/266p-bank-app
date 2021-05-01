@@ -3,6 +3,7 @@ package com.example.bank;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.service.autofill.UserData;
 import android.view.View;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = UserDatabase.getInstance(this);
 
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,7 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
                 User userNameCheck = db.userDao().selectSingleUserByName(userName);
 
-                User userLoginCheck = db.userDao().selectSingleUser(userName, password);
+
+
+                String sql = "SELECT * FROM users WHERE userName='" + userName + "'" + " AND password='" + password + "'";
+                Cursor userCursor = db.query(sql, null);
+
 
                 // User name does not exist
                 if (userNameCheck == null) {
@@ -45,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Username exists
                 else {
-                    if (userLoginCheck == null) {
+                    if (userCursor.getCount() <= 0) {
                         txtMessage.setText("Wrong password!");
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
@@ -54,8 +60,12 @@ public class MainActivity extends AppCompatActivity {
                         // Todo: Login succesful and send user to next activity
                         Toast.makeText(MainActivity.this, "Yay you logged in", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
-                        intent.putExtra("userId", userLoginCheck.getId());
-                        startActivity(intent);
+                        if (userCursor.moveToFirst()) {
+                            intent.putExtra("userId", userCursor.getInt(userCursor.getColumnIndex("id")));
+                            userCursor.close();
+                            startActivity(intent);
+                        }
+
 
                     }
                 }
