@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
                         txtMessage.setVisibility(View.VISIBLE);
                     }
                     else {
-                        // Todo: Login succesful and send user to next activity
-                        Toast.makeText(MainActivity.this, "Yay you logged in", Toast.LENGTH_SHORT).show();
+                        // Successful Login
                         Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
                         if (userCursor.moveToFirst()) {
                             intent.putExtra("userId", userCursor.getInt(userCursor.getColumnIndex("id")));

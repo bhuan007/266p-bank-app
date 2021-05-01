@@ -21,7 +21,7 @@
             android:text="Balance: "
             android:textSize="20sp"/>
         <TextView
-            android:id="@+id/txtWithdrawBalance"
+            android:id="@+id/txtBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$8,485.25"
@@ -44,7 +44,8 @@
         <EditText
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:id="@+id/txtWithdrawAmount"
+            android:id="@+id/etWithdraw"
+            android:inputType="numberDecimal"
         />
     </LinearLayout>
 
