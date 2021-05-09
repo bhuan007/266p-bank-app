@@ -40,19 +40,27 @@ public class DepositActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Double depositAmt = Double.parseDouble(etDeposit.getText().toString());
-                if (depositAmt > 0) {
+
+                if (etDeposit.getText().toString().startsWith("0") && depositAmt >= 1) {
+                    Toast.makeText(DepositActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
+                }
+                else if (depositAmt > 4294967295.99){
+                    Toast.makeText(DepositActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
+                }
+                else if (etDeposit.getText().toString().contains(".")
+                        && (etDeposit.getText().toString().length() - etDeposit.getText().toString().indexOf('.') - 1) > 2) {
+                    Toast.makeText(DepositActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
+                }
+
+                else{
                     Double updatedBalance = user.getBalance() + depositAmt;
                     updatedBalance = Math.round(updatedBalance * 100)/100d;
                     user.setBalance(updatedBalance);
                     db.userDao().updateSingleUser(user);
                     txtBalance.setText(currencyFormat.format(user.getBalance()));
                     etDeposit.setText("");
+                    Toast.makeText(DepositActivity.this, "Deposit Successfully", Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    Toast.makeText(DepositActivity.this, "Positive value only", Toast.LENGTH_SHORT).show();
-                }
-
-
             }
         });
     }

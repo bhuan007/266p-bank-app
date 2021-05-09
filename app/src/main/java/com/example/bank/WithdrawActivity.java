@@ -20,6 +20,8 @@ public class WithdrawActivity extends AppCompatActivity {
     private User user;
     private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,20 +39,36 @@ public class WithdrawActivity extends AppCompatActivity {
         btnWithdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Double currentBal = user.getBalance();
                 Double withdrawAmt = Double.parseDouble(etWithdraw.getText().toString());
-                withdrawAmt = Math.round(withdrawAmt * 100) / 100d;
+                if (etWithdraw.getText().toString().startsWith("0") && withdrawAmt >= 1) {
+                    Toast.makeText(WithdrawActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
+                }
+                else if (withdrawAmt > 4294967295.99){
+                    Toast.makeText(WithdrawActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
+                }
+                else if (etWithdraw.getText().toString().contains(".")
+                        && (etWithdraw.getText().toString().length() - etWithdraw.getText().toString().indexOf('.') - 1) > 2) {
+                        Toast.makeText(WithdrawActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
+                    }
 
-                if (currentBal >= withdrawAmt) {
-                    Double updatedBalance = currentBal - withdrawAmt;
-                    user.setBalance(updatedBalance);
-                    db.userDao().updateSingleUser(user);
-                    txtBalance.setText(currencyFormat.format(user.getBalance()));
-                    etWithdraw.setText("");
+                else{
+                    withdrawAmt = Math.round(withdrawAmt * 100) / 100d;
+                    if (currentBal >= withdrawAmt) {
+                        Double updatedBalance = currentBal - withdrawAmt;
+                        user.setBalance(updatedBalance);
+                        db.userDao().updateSingleUser(user);
+                        txtBalance.setText(currencyFormat.format(user.getBalance()));
+                        etWithdraw.setText("");
+                        Toast.makeText(WithdrawActivity.this, "Withdraw Successfully", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else {
+                        Toast.makeText(WithdrawActivity.this, "Cannot withdraw more than balance", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-                    Toast.makeText(WithdrawActivity.this, "Cannot withdraw more than balance", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
 

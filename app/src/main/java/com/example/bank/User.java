@@ -25,6 +25,12 @@ public class User {
     }
 
     @Ignore
+    public User(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+
+    @Ignore
     public User(int id, String userName, String password, Double balance) {
         this.id = id;
         this.userName = userName;
