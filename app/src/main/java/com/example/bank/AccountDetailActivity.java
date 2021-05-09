@@ -18,6 +18,7 @@ public class AccountDetailActivity extends AppCompatActivity {
     private TextView txtWelcomeUser, txtBalance;
     private Button btnStatement, btnWithdraw, btnDeposit, btnLogos;
     private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+    private int userId;
 
 
     @Override
@@ -26,16 +27,7 @@ public class AccountDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_detail);
         initViews();
 
-        db = UserDatabase.getInstance(this);
-
-        Intent intent = getIntent();
-        int userId = intent.getIntExtra("userId",-1);
-
-        if (userId > -1) {
-            user = db.userDao().selectSingleUserById(userId);
-            txtWelcomeUser.setText("Welcome " + user.getUserName());
-            txtBalance.setText(currencyFormat.format(user.getBalance()));
-        }
+        updateAccountDetails();
 
         btnStatement.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +65,25 @@ public class AccountDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateAccountDetails();
+    }
+
+    private void updateAccountDetails() {
+        db = UserDatabase.getInstance(this);
+
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("userId",-1);
+
+        if (userId > -1) {
+            user = db.userDao().selectSingleUserById(userId);
+            txtWelcomeUser.setText("Welcome " + user.getUserName());
+            txtBalance.setText(currencyFormat.format(user.getBalance()));
+        }
     }
 
     private void initViews() {
