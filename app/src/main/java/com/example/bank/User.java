@@ -1,14 +1,18 @@
 package com.example.bank;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "users")
+@Entity(tableName = "users",
+indices = {@Index(value = {"userName"}, unique = true)})
 public class User {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+
     private String userName;
     private String password;
     private Double balance;
