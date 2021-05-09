@@ -30,7 +30,7 @@
                 android:id="@+id/txtImg1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="money.png" />
+                android:text="money" />
         </LinearLayout>
 
         <LinearLayout
@@ -50,18 +50,20 @@
                 android:id="@+id/txtImg2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="piggy.jpg" />
+                android:text="piggy" />
         </LinearLayout>
     </LinearLayout>
 
 
     <EditText
+        android:id="@+id/etImgName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:hint="Enter Image Name" />
 
     <Button
+        android:id="@+id/btnDownload"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
