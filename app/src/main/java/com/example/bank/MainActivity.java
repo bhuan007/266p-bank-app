@@ -108,33 +108,45 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String userName = etUserName.getText().toString();
-                String password = etPassword.getText().toString();
-                Double initialBalance = Double.parseDouble(etInitialBalance.getText().toString());
-                if (!userName.matches("[_\\-\\.0-9a-z]{1,127}")
-                        || !password.matches("[_\\-\\.0-9a-z]{1,127}")) {
-                    Toast.makeText(MainActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
-                }
+                try {
 
-                if (etInitialBalance.getText().toString().startsWith("0") && initialBalance >= 1) {
-                    Toast.makeText(MainActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
-                }
+                    String userName = etUserName.getText().toString();
+                    String password = etPassword.getText().toString();
+                    Double initialBalance = Double.parseDouble(etInitialBalance.getText().toString());
 
-                if (etInitialBalance.getText().toString().contains(".")
-                        && (etInitialBalance.getText().toString().length() - etInitialBalance.getText().toString().indexOf('.') - 1) > 2) {
-                    Toast.makeText(MainActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
-                } else {
-                    User userCheck = db.userDao().selectSingleUserByName(userName);
-
-                    if (userCheck == null) {
-                        User user = new User(userName, password);
-                        db.userDao().insertSingleUser(user);
-                        user.setBalance(initialBalance);
-                        db.userDao().updateSingleUser(user);
-                        Toast.makeText(MainActivity.this, "Sign Up Successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "User ", Toast.LENGTH_SHORT).show();
+                    if (userName == null || password == null || initialBalance == null) {
+                        throw new InvalidInputException();
                     }
+
+                    if (!userName.matches("[_\\-\\.0-9a-z]{1,127}")
+                            || !password.matches("[_\\-\\.0-9a-z]{1,127}")) {
+                        throw new InvalidInputException();
+                    }
+
+                    if (etInitialBalance.getText().toString().startsWith("0") && initialBalance >= 1) {
+                        throw new InvalidInputException();
+                    }
+
+                    if (etInitialBalance.getText().toString().contains(".")
+                            && (etInitialBalance.getText().toString().length() - etInitialBalance.getText().toString().indexOf('.') - 1) > 2) {
+                        throw new InvalidInputException();
+                    }
+                    else {
+                        User userCheck = db.userDao().selectSingleUserByName(userName);
+
+                        if (userCheck == null) {
+                            User user = new User(userName, password);
+                            db.userDao().insertSingleUser(user);
+                            user.setBalance(initialBalance);
+                            db.userDao().updateSingleUser(user);
+                            Toast.makeText(MainActivity.this, "Sign Up Successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "User already exists", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }
+                catch (InvalidInputException e){
 
                 }
             }
