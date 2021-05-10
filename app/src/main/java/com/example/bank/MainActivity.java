@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     txtMessage.setText("Your user name and password must be between 1 - 127 characters long and could only include underscores, hyphens, dots, digits, and lowercase alphabetical characters.");
                     txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                     txtMessage.setVisibility(View.VISIBLE);
+                    Toast.makeText(MainActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
                 }
 
                 else if (etInitialBalance.getText().toString().startsWith("0") && initialBalance >= 1) {
