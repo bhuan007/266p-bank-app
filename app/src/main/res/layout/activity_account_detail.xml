@@ -36,13 +36,6 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnStatement"
-        android:layout_marginTop="40px"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="View Statement"
-        android:background="@drawable/btn_round" />
 
     <Button
         android:id="@+id/btnWithdraw"

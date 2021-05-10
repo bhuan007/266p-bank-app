@@ -16,7 +16,7 @@ public class AccountDetailActivity extends AppCompatActivity {
     private UserDatabase db;
     private User user;
     private TextView txtWelcomeUser, txtBalance;
-    private Button btnStatement, btnWithdraw, btnDeposit, btnLogos, btnLogout;
+    private Button btnWithdraw, btnDeposit, btnLogos, btnLogout;
     private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     private int userId;
 
@@ -29,14 +29,6 @@ public class AccountDetailActivity extends AppCompatActivity {
 
         updateAccountDetails();
 
-        btnStatement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AccountDetailActivity.this, StatementActivity.class);
-                intent.putExtra("userId", userId);
-                startActivity(intent);
-            }
-        });
 
         btnWithdraw.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +90,6 @@ public class AccountDetailActivity extends AppCompatActivity {
     private void initViews() {
         txtWelcomeUser = findViewById(R.id.txtWelcomeUser);
         txtBalance = findViewById(R.id.txtBalance);
-        btnStatement = findViewById(R.id.btnStatement);
         btnWithdraw = findViewById(R.id.btnWithdraw);
         btnDeposit = findViewById(R.id.btnDeposit);
         btnLogos = findViewById(R.id.btnLogos);
