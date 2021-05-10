@@ -16,7 +16,7 @@ public class AccountDetailActivity extends AppCompatActivity {
     private UserDatabase db;
     private User user;
     private TextView txtWelcomeUser, txtBalance;
-    private Button btnStatement, btnWithdraw, btnDeposit, btnLogos;
+    private Button btnStatement, btnWithdraw, btnDeposit, btnLogos, btnLogout;
     private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     private int userId;
 
@@ -65,6 +65,15 @@ public class AccountDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AccountDetailActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                AccountDetailActivity.this.finish();
+            }
+        });
     }
 
     @Override
@@ -93,5 +102,6 @@ public class AccountDetailActivity extends AppCompatActivity {
         btnWithdraw = findViewById(R.id.btnWithdraw);
         btnDeposit = findViewById(R.id.btnDeposit);
         btnLogos = findViewById(R.id.btnLogos);
+        btnLogout = findViewById(R.id.btnLogout);
     }
 }

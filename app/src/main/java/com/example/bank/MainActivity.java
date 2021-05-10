@@ -44,15 +44,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String userName = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
-                Double initialBalance = Double.parseDouble(etInitialBalance.getText().toString());
 
+                if (userName.equals("") || password.equals("")) {
+                    txtMessage.setText("The username/password field is empty.");
+                    txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
+                    txtMessage.setVisibility(View.VISIBLE);
+                    return;
+                }
+                Double initialBalance = null;
+
+                if (!etInitialBalance.getText().toString().equals("")) {
+                    initialBalance = Double.parseDouble(etInitialBalance.getText().toString());
+                }
 
                 User userNameCheck = db.userDao().selectSingleUserByName(userName);
 
-
                 String sql = "SELECT * FROM users WHERE userName='" + userName + "'" + " AND password='" + password + "'";
                 Cursor userCursor = db.query(sql, null);
-
 
                 // User name does not exist
                 if (userNameCheck == null) {
@@ -68,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
                     }
-                    else if (etInitialBalance.getText().toString().startsWith("0") && initialBalance >= 1) {
+                    else if (etInitialBalance.getText().toString().startsWith("0") && initialBalance != null && initialBalance >= 1) {
                         txtMessage.setText("Wrong input balance!");
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
                     }
-                    else if (initialBalance > 4294967295.99){
+                    else if (initialBalance != null && initialBalance > 4294967295.99){
                         txtMessage.setText("Wrong input balance!");
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
@@ -88,15 +96,17 @@ public class MainActivity extends AppCompatActivity {
                     else {
                         // Successful Login
 
-                        userNameCheck.setBalance(initialBalance);
+                        if (initialBalance != null) userNameCheck.setBalance(initialBalance);
                         db.userDao().updateSingleUser(userNameCheck);
 
                         Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         if (userCursor.moveToFirst()) {
                             intent.putExtra("userId", userCursor.getInt(userCursor.getColumnIndex("id")));
 
                             userCursor.close();
                             startActivity(intent);
+                            MainActivity.this.finish();
                         }
                     }
                 }

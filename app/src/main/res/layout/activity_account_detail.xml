@@ -68,4 +68,12 @@
         android:text="Download Bank Logos"
         android:background="@drawable/btn_round"/>
 
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_marginTop="40px"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:background="@drawable/btn_round"/>
+
 </LinearLayout>
