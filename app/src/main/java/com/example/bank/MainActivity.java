@@ -18,17 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtMessage;
     private Button btnLogin, btnSignUp;
     private EditText etUserName, etPassword, etInitialBalance;
-
     private UserDatabase db;
-
-
-    public class InvalidInputException extends Exception{
-        public InvalidInputException(){
-            txtMessage.setText("invalid_input");
-            txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
-            txtMessage.setVisibility(View.VISIBLE);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
