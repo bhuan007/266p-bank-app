@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +42,7 @@ public class WithdrawActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Double currentBal = user.getBalance();
+                currentBal = Math.round(currentBal * 100)/100d;
                 Double withdrawAmt = Double.parseDouble(etWithdraw.getText().toString());
                 if (etWithdraw.getText().toString().startsWith("0") && withdrawAmt >= 1) {
                     Toast.makeText(WithdrawActivity.this, "invalid_input", Toast.LENGTH_SHORT).show();
@@ -54,7 +56,6 @@ public class WithdrawActivity extends AppCompatActivity {
                     }
 
                 else{
-                    withdrawAmt = Math.round(withdrawAmt * 100) / 100d;
                     if (currentBal >= withdrawAmt) {
                         Double updatedBalance = currentBal - withdrawAmt;
                         user.setBalance(updatedBalance);
