@@ -1,8 +1,8 @@
 # 266p-bank-app
 
 Prerequisite:
-Must have Android API 24+ to run
-Please build gradle file before running
+1) Must have Android API 24+ to run
+2) Please build gradle file before running
 
 Project Setup:
 
