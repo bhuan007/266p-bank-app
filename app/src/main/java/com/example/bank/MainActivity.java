@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // User name does not exist
                 if (userNameCheck == null) {
-                    txtMessage.setText("This user does not exist!");
+                    txtMessage.setText("Sorry! One or more of your login fields is incorrect.");
                     txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                     txtMessage.setVisibility(View.VISIBLE);
                 }
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 // Username exists
                 else {
                     if (loginCheck == null) {
-                        txtMessage.setText("Wrong password!");
+                        txtMessage.setText("Username of password is incorrect.");
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
                     }
