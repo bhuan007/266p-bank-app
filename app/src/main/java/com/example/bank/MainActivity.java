@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
                 User userNameCheck = db.userDao().selectSingleUserByName(userName);
 
-//                String sql = "SELECT * FROM users WHERE userName='" + userName + "'" + " AND password='" + password + "'";
-//                Cursor userCursor = db.query(sql, null);
-
                 User loginCheck = db.userDao().selectSingleUser(userName, password);
 
                 // User name does not exist
@@ -66,27 +63,28 @@ public class MainActivity extends AppCompatActivity {
                 else {
 
                     //Reset the login attempts if the user wait for enough time(30 min)
-                    if (currentTimeInMillis - userNameCheck.getLastLoginTime() >= 1800000){
+                    if (currentTimeInMillis - userNameCheck.getLastLoginTime() >= 1800000) {
                         userNameCheck.resetLoginFailedAttempts();
                         db.userDao().updateSingleUser(userNameCheck);
                     }
 
                     //Check if the user has tried more than 5 times
                     if (userNameCheck.getLoginFailedAttempts() >= 5) {
-                        txtMessage.setText("You have already made too many attempts, you still need to wait for"+ (currentTimeInMillis - userNameCheck.getLastLoginTime())/60000 +" minutes!");
+                        txtMessage.setText("You have already made too many attempts, you still need to wait for" + (currentTimeInMillis - userNameCheck.getLastLoginTime()) / 60000 + " minutes!");
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
                     }
+
+                    // Correct user but wrong password
                     else if (loginCheck == null) {
                         userNameCheck.setLastLoginTime(currentTimeInMillis);
                         userNameCheck.incrementLoginFailedAttempts();
                         db.userDao().updateSingleUser(userNameCheck);
-                        txtMessage.setText("Wrong password!You have tried "+userNameCheck.getLoginFailedAttempts()+" times!");
+                        txtMessage.setText("Wrong password!You have tried " + userNameCheck.getLoginFailedAttempts() + " times!");
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
 
-                    if (loginCheck == null) {
-                        txtMessage.setText("Username of password is incorrect.");
+                        txtMessage.setText("Username or password is incorrect.");
 
                         //Reset the login attempts if the user wait for enough time(30 min)
                         if (currentTimeInMillis - userNameCheck.getLastLoginTime() >= 1800000) {
@@ -98,31 +96,17 @@ public class MainActivity extends AppCompatActivity {
                             txtMessage.setText("You have already made too many attempts, you still need to wait for" + (currentTimeInMillis - userNameCheck.getLastLoginTime()) / 60000 + " minutes!");
                             txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                             txtMessage.setVisibility(View.VISIBLE);
-                        } else if (loginCheck == null) {
+                        } else  {
                             userNameCheck.setLastLoginTime(currentTimeInMillis);
-                            userNameCheck.incrementLoginFailedAttempts();
                             txtMessage.setText("Wrong password!You have tried " + userNameCheck.getLoginFailedAttempts() + " times!");
                             txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                             txtMessage.setVisibility(View.VISIBLE);
-                        } else {
-                            // Successful Login
-
-                            // Reset the LoginFailedAttempts to 0 and LastLoginTime
-                            userNameCheck.setLastLoginTime(currentTimeInMillis);
-                            userNameCheck.resetLoginFailedAttempts();
-
-
-                            Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.putExtra("userId", loginCheck.getId());
-
-                            startActivity(intent);
-                            MainActivity.this.finish();
                         }
-                    }
 
+                    }
+                    // Successful Login
                     else {
-                        // Successful Login
+
 
                         // Reset the LoginFailedAttempts to 0 and LastLoginTime
                         userNameCheck.setLastLoginTime(currentTimeInMillis);
@@ -179,9 +163,8 @@ public class MainActivity extends AppCompatActivity {
 
                     if (userCheck == null) {
                         User user = new User(userName, password);
-                        db.userDao().insertSingleUser(user);
                         user.setBalance(initialBalance);
-                        db.userDao().updateSingleUser(user);
+                        db.userDao().insertSingleUser(user);
                         txtMessage.setText("Sign up successful!");
                         txtMessage.setTextColor(getResources().getColor(R.color.positiveGreen));
                         txtMessage.setVisibility(View.VISIBLE);

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ public class AccountDetailActivity extends AppCompatActivity {
     private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     private int userId;
 
+    private static final String TAG = "AccountDetailActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class AccountDetailActivity extends AppCompatActivity {
         if (userId > -1) {
             user = db.userDao().selectSingleUserById(userId);
             txtWelcomeUser.setText("Welcome " + user.getUserName());
+            Log.d(TAG, "user balance is " + user.getBalance());
             txtBalance.setText(currencyFormat.format(user.getBalance()));
         }
     }
