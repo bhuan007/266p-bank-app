@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main Activity";
     private TextView txtMessage;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                long currentTimeInMillis = calendar.getTimeInMillis();
                 String userName = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
                 etInitialBalance.setKeyListener(null);
@@ -59,14 +64,40 @@ public class MainActivity extends AppCompatActivity {
 
                 // Username exists
                 else {
+<<<<<<< HEAD
                     if (loginCheck == null) {
                         txtMessage.setText("Username of password is incorrect.");
+=======
+
+                    //Reset the login attempts if the user wait for enough time(30 min)
+                    if (currentTimeInMillis - userNameCheck.getLastLoginTime() >= 1800000){
+                        userNameCheck.resetLoginFailedAttempts();
+                    }
+
+                    //Check if the user has tried more than 5 times
+                    if (userNameCheck.getLoginFailedAttempts() >= 5) {
+                        txtMessage.setText("You have already made too many attempts, you still need to wait for"+ (currentTimeInMillis - userNameCheck.getLastLoginTime())/60000 +" minutes!");
+                        txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
+                        txtMessage.setVisibility(View.VISIBLE);
+                    }
+                    else if (loginCheck == null) {
+                        userNameCheck.setLastLoginTime(currentTimeInMillis);
+                        userNameCheck.incrementLoginFailedAttempts();
+                        txtMessage.setText("Wrong password!You have tried "+userNameCheck.getLoginFailedAttempts()+" times!");
+>>>>>>> 2d1c162014c6afd337be9a69b85af774096f165d
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
                     }
 
                     else {
                         // Successful Login
+
+                        // Reset the LoginFailedAttempts to 0 and LastLoginTime
+                        userNameCheck.setLastLoginTime(currentTimeInMillis);
+                        userNameCheck.resetLoginFailedAttempts();
+                        if (initialBalance != null) userNameCheck.setBalance(initialBalance);
+                        db.userDao().updateSingleUser(userNameCheck);
+
 
                         Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
