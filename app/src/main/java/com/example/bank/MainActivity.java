@@ -89,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
                             // Reset the LoginFailedAttempts to 0 and LastLoginTime
                             userNameCheck.setLastLoginTime(currentTimeInMillis);
                             userNameCheck.resetLoginFailedAttempts();
-                            if (initialBalance != null) userNameCheck.setBalance(initialBalance);
-                            db.userDao().updateSingleUser(userNameCheck);
 
 
                             Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
@@ -102,6 +100,20 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
+                    else {
+                        // Successful Login
+
+                        // Reset the LoginFailedAttempts to 0 and LastLoginTime
+                        userNameCheck.setLastLoginTime(currentTimeInMillis);
+                        userNameCheck.resetLoginFailedAttempts();
+
+                        Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("userId", loginCheck.getId());
+
+                        startActivity(intent);
+                        MainActivity.this.finish();
+                    }
                 }
             }
         });
