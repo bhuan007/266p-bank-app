@@ -39,17 +39,13 @@ public class MainActivity extends AppCompatActivity {
                 long currentTimeInMillis = calendar.getTimeInMillis();
                 String userName = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
+                etInitialBalance.setKeyListener(null);
 
                 if (userName.equals("") || password.equals("")) {
                     txtMessage.setText("The username/password field is empty.");
                     txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                     txtMessage.setVisibility(View.VISIBLE);
                     return;
-                }
-                Double initialBalance = null;
-
-                if (!etInitialBalance.getText().toString().equals("")) {
-                    initialBalance = Double.parseDouble(etInitialBalance.getText().toString());
                 }
 
                 User userNameCheck = db.userDao().selectSingleUserByName(userName);
@@ -87,30 +83,16 @@ public class MainActivity extends AppCompatActivity {
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
                     }
-                    else if (etInitialBalance.getText().toString().startsWith("0") && initialBalance != null && initialBalance >= 1) {
-                        txtMessage.setText("Wrong input balance!");
-                        txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
-                        txtMessage.setVisibility(View.VISIBLE);
-                    }
-                    else if (initialBalance != null && initialBalance > 4294967295.99){
-                        txtMessage.setText("Wrong input balance!");
-                        txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
-                        txtMessage.setVisibility(View.VISIBLE);
-                    }
-                    else if (etInitialBalance.getText().toString().contains(".")
-                        && (etInitialBalance.getText().toString().length() - etInitialBalance.getText().toString().indexOf('.') - 1) > 2) {
-                            txtMessage.setText("Wrong input balance!");
-                            txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
-                            txtMessage.setVisibility(View.VISIBLE);
 
-                    }
                     else {
                         // Successful Login
+
                         // Reset the LoginFailedAttempts to 0 and LastLoginTime
                         userNameCheck.setLastLoginTime(currentTimeInMillis);
                         userNameCheck.resetLoginFailedAttempts();
                         if (initialBalance != null) userNameCheck.setBalance(initialBalance);
                         db.userDao().updateSingleUser(userNameCheck);
+
 
                         Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -131,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 String userName = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
                 Double initialBalance = null;
-                if(!etInitialBalance.getText().toString().equals("")) initialBalance = Double.parseDouble(etInitialBalance.getText().toString());
+                if(!etInitialBalance.getText().toString().equals("") && !etInitialBalance.getText().toString().equals(".")) initialBalance = Double.parseDouble(etInitialBalance.getText().toString());
 
 
                 if (userName == null || password == null || initialBalance == null) {
