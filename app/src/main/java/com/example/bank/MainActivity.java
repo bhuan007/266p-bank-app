@@ -45,8 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
                 User userNameCheck = db.userDao().selectSingleUserByName(userName);
 
-                String sql = "SELECT * FROM users WHERE userName='" + userName + "'" + " AND password='" + password + "'";
-                Cursor userCursor = db.query(sql, null);
+//                String sql = "SELECT * FROM users WHERE userName='" + userName + "'" + " AND password='" + password + "'";
+//                Cursor userCursor = db.query(sql, null);
+
+                User loginCheck = db.userDao().selectSingleUser(userName, password);
 
                 // User name does not exist
                 if (userNameCheck == null) {
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Username exists
                 else {
-                    if (userCursor.getCount() <= 0) {
+                    if (loginCheck == null) {
                         txtMessage.setText("Wrong password!");
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
@@ -68,13 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        if (userCursor.moveToFirst()) {
-                            intent.putExtra("userId", userCursor.getInt(userCursor.getColumnIndex("id")));
+                        intent.putExtra("userId", loginCheck.getId());
 
-                            userCursor.close();
-                            startActivity(intent);
-                            MainActivity.this.finish();
-                        }
+                        startActivity(intent);
+                        MainActivity.this.finish();
                     }
                 }
 
