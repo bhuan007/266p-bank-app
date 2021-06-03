@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
                 long currentTimeInMillis = calendar.getTimeInMillis();
                 String userName = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
-                etInitialBalance.setKeyListener(null);
 
                 if (userName.equals("") || password.equals("")) {
                     txtMessage.setText("The username/password field is empty.");
