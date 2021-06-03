@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     //Reset the login attempts if the user wait for enough time(30 min)
                     if (currentTimeInMillis - userNameCheck.getLastLoginTime() >= 1800000){
                         userNameCheck.resetLoginFailedAttempts();
+                        db.userDao().updateSingleUser(userNameCheck);
                     }
 
                     //Check if the user has tried more than 5 times
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     else if (loginCheck == null) {
                         userNameCheck.setLastLoginTime(currentTimeInMillis);
                         userNameCheck.incrementLoginFailedAttempts();
+                        db.userDao().updateSingleUser(userNameCheck);
                         txtMessage.setText("Wrong password!You have tried "+userNameCheck.getLoginFailedAttempts()+" times!");
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         // Reset the LoginFailedAttempts to 0 and LastLoginTime
                         userNameCheck.setLastLoginTime(currentTimeInMillis);
                         userNameCheck.resetLoginFailedAttempts();
-
+                        db.userDao().updateSingleUser(userNameCheck);
                         Intent intent = new Intent(MainActivity.this, AccountDetailActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("userId", loginCheck.getId());
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 String password = etPassword.getText().toString();
                 Double initialBalance = null;
                 if(!etInitialBalance.getText().toString().equals("") && !etInitialBalance.getText().toString().equals(".")) initialBalance = Double.parseDouble(etInitialBalance.getText().toString());
+
 
 
                 if (userName == null || password == null || initialBalance == null) {
