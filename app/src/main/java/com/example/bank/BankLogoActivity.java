@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -45,7 +46,7 @@ public class BankLogoActivity extends AppCompatActivity {
                         downloadFile("https://st2.depositphotos.com/5266903/8131/i/450/depositphotos_81311248-stock-photo-bank-icon.jpg");
                         break;
                     default:
-                        downloadFile(imgName);
+                        Toast.makeText(BankLogoActivity.this, "Incorrect image name!", Toast.LENGTH_SHORT).show();
                         break;
                 }
 
