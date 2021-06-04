@@ -84,35 +84,14 @@ public class MainActivity extends AppCompatActivity {
                         userNameCheck.setLastLoginTime(currentTimeInMillis);
                         userNameCheck.incrementLoginFailedAttempts();
                         db.userDao().updateSingleUser(userNameCheck);
-                        txtMessage.setText("Wrong password!You have tried " + userNameCheck.getLoginFailedAttempts() + " times!");
+                        txtMessage.setText("Wrong password!\nYou have tried " + userNameCheck.getLoginFailedAttempts() + " times!");
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
 
-                        txtMessage.setText("Username or password is incorrect.");
-
-                        //Reset the login attempts if the user wait for enough time(waitingTime)
-                        if (currentTimeInMillis - userNameCheck.getLastLoginTime() >= 1800000) {
-                            userNameCheck.resetLoginFailedAttempts();
-                        }
-
-                        //Check if the user has tried more than 5 times
-                        if (userNameCheck.getLoginFailedAttempts() >= 5) {
-                            long restWaitingTimeInMin = waitingTime - (currentTimeInMillis - userNameCheck.getLastLoginTime()) / 60000;
-                            txtMessage.setText("You have already made too many attempts.\nYou still need to wait for " + restWaitingTimeInMin + " minutes!");
-                            txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
-                            txtMessage.setVisibility(View.VISIBLE);
-                        } else  {
-                            userNameCheck.setLastLoginTime(currentTimeInMillis);
-                            txtMessage.setText("Wrong password!\nYou have tried " + userNameCheck.getLoginFailedAttempts() + " times!");
-                            txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
-                            txtMessage.setVisibility(View.VISIBLE);
-                        }
 
                     }
                     // Successful Login
                     else {
-
-
                         // Reset the LoginFailedAttempts to 0 and LastLoginTime
                         userNameCheck.setLastLoginTime(currentTimeInMillis);
                         userNameCheck.resetLoginFailedAttempts();
