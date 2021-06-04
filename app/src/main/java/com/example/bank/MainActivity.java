@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLogin, btnSignUp;
     private EditText etUserName, etPassword, etInitialBalance;
     private UserDatabase db;
+    private long waitingTime = 30; // Unit: Minute
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +61,20 @@ public class MainActivity extends AppCompatActivity {
 
                 // Username exists
                 else {
-
-                    //Reset the login attempts if the user wait for enough time(30 min)
-                    if (currentTimeInMillis - userNameCheck.getLastLoginTime() >= 1800000) {
+                    Log.d("Status", "LoginFailedAttempts: "+db.userDao().selectSingleUserByName(userName).getLoginFailedAttempts()+", LastLoginTime: "+db.userDao().selectSingleUserByName(userName).getLastLoginTime());
+                    //Reset the login attempts if the user wait for enough time(waitingTime)
+                    if (currentTimeInMillis - userNameCheck.getLastLoginTime() >= 60000*waitingTime) {
                         userNameCheck.resetLoginFailedAttempts();
                         db.userDao().updateSingleUser(userNameCheck);
                     }
 
                     //Check if the user has tried more than 5 times
                     if (userNameCheck.getLoginFailedAttempts() >= 5) {
-                        txtMessage.setText("You have already made too many attempts, you still need to wait for" + (currentTimeInMillis - userNameCheck.getLastLoginTime()) / 60000 + " minutes!");
+                        userNameCheck.setLastLoginTime(currentTimeInMillis);
+                        userNameCheck.incrementLoginFailedAttempts();
+                        db.userDao().updateSingleUser(userNameCheck);
+                        long restWaitingTimeInMin = waitingTime - (currentTimeInMillis - userNameCheck.getLastLoginTime()) / 60000;
+                        txtMessage.setText("You have already made too many attempts.\nYou still need to wait for " + restWaitingTimeInMin + " minutes!");
                         txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                         txtMessage.setVisibility(View.VISIBLE);
                     }
@@ -85,19 +90,20 @@ public class MainActivity extends AppCompatActivity {
 
                         txtMessage.setText("Username or password is incorrect.");
 
-                        //Reset the login attempts if the user wait for enough time(30 min)
+                        //Reset the login attempts if the user wait for enough time(waitingTime)
                         if (currentTimeInMillis - userNameCheck.getLastLoginTime() >= 1800000) {
                             userNameCheck.resetLoginFailedAttempts();
                         }
 
                         //Check if the user has tried more than 5 times
                         if (userNameCheck.getLoginFailedAttempts() >= 5) {
-                            txtMessage.setText("You have already made too many attempts, you still need to wait for" + (currentTimeInMillis - userNameCheck.getLastLoginTime()) / 60000 + " minutes!");
+                            long restWaitingTimeInMin = waitingTime - (currentTimeInMillis - userNameCheck.getLastLoginTime()) / 60000;
+                            txtMessage.setText("You have already made too many attempts.\nYou still need to wait for " + restWaitingTimeInMin + " minutes!");
                             txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                             txtMessage.setVisibility(View.VISIBLE);
                         } else  {
                             userNameCheck.setLastLoginTime(currentTimeInMillis);
-                            txtMessage.setText("Wrong password!You have tried " + userNameCheck.getLoginFailedAttempts() + " times!");
+                            txtMessage.setText("Wrong password!\nYou have tried " + userNameCheck.getLoginFailedAttempts() + " times!");
                             txtMessage.setTextColor(getResources().getColor(R.color.negativeRed));
                             txtMessage.setVisibility(View.VISIBLE);
                         }
@@ -163,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
                     if (userCheck == null) {
                         User user = new User(userName, password);
                         user.setBalance(initialBalance);
+                        user.resetLoginFailedAttempts();
                         db.userDao().insertSingleUser(user);
                         txtMessage.setText("Sign up successful!");
                         txtMessage.setTextColor(getResources().getColor(R.color.positiveGreen));
